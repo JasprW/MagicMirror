@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="me.jaspr.magicmirror.MainActivity">
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time"
+        android:layout_alignParentEnd="true"
+        android:textSize="80sp"
+        android:textColor="#AFFF"
+        android:fontFamily="sans-serif-thin" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Friday \n March 1"
+        android:id="@+id/date"
+        android:layout_alignEnd="@id/time"
+        android:textSize="20sp"
+        android:textColor="#AFFF"
+        android:fontFamily="sans-serif-light"
+        android:gravity="end"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginTop="100dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="220dp"
+        android:orientation="horizontal"
+        android:id="@+id/weather"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/temperature"
+            android:text="N/A°"
+            android:textSize="80sp"
+            android:fontFamily="sans-serif-thin"
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:id="@+id/weather_icon"
+            android:layout_marginStart="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/partly_cloudy"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Getting Weather Summary..."
+        android:id="@+id/weather_summary"
+        android:textSize="20sp"
+        android:lineSpacingExtra="4dp"
+        android:fontFamily="sans-serif-light"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="100dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/news1"
+            android:text="Getting News..."
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/circle"
+            android:drawablePadding="16dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/news2"
+            android:text="Getting News..."
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/circle"
+            android:drawablePadding="16dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/news3"
+            android:text="Getting News..."
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/circle"
+            android:drawablePadding="16dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/news4"
+            android:text="Getting News..."
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/circle"
+            android:drawablePadding="16dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/news5"
+            android:text="Getting News..."
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/circle"
+            android:drawablePadding="16dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+</RelativeLayout>
