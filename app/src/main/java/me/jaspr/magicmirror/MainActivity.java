@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] mFeedList = {"http://www.androidpolice.com/feed","http://www.xda-developers.com/feed","http://sspai.com/feed","http://36kr.com/feed"};
 
     //Add Your Forecast API Key
-    private String mForecastApi = "3cfde160ddf1bc1dd3fcb13fabe716cf";
+    private String mForecastApi = getString(R.string.dark_sky_api_key);
 
     final public static int REQUEST_CODE_ASK_CALL_PHONE = 123;
 
