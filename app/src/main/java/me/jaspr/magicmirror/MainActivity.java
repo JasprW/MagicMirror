@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,14 +38,19 @@ import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private double latitude = 0.0;
-    private double longitude = 0.0;
+    private double mLatitude = 0.0;
+    private double mLongitude = 0.0;
+
+    private TextView mDate;
 
     private static TextView mWeatherSummary;
     private static TextView mTemperature;
     private static ImageView mWeatherIcon;
 
     private Boolean isSI = true;
+    private int mFeedNo = 0;
+
+    private LinearLayout mNews;
 
     private TextView mNews1;
     private TextView mNews2;
@@ -52,8 +58,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView mNews4;
     private TextView mNews5;
 
-    private String feed = "http://www.androidpolice.com/feed";
-    private String forecastApi = "3cfde160ddf1bc1dd3fcb13fabe716cf";
+    //Add Your Feed List
+    private String[] mFeedList = {"http://www.androidpolice.com/feed","http://www.xda-developers.com/feed","http://sspai.com/feed","http://36kr.com/feed"};
+
+    //Add Your Forecast API Key
+    private String mForecastApi = "3cfde160ddf1bc1dd3fcb13fabe716cf";
 
     final public static int REQUEST_CODE_ASK_CALL_PHONE = 123;
 
@@ -70,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 updateWeather(Request.Units.US);
             }
 
-            getNewsUpdate(feed);
+            getNewsUpdate(mFeedList[mFeedNo]);
 
             //Toast.makeText(MainActivity.this, "Updating data", Toast.LENGTH_SHORT).show();
             handler.postDelayed(this, 3600000);
@@ -100,12 +109,15 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        ForecastApi.create(forecastApi);
+        ForecastApi.create(mForecastApi);
 
         mTemperature = (TextView)findViewById(R.id.temperature);
         mWeatherSummary = (TextView)findViewById(R.id.weather_summary);
         mWeatherIcon = (ImageView)findViewById(R.id.weather_icon);
-        TextView mDate = (TextView) findViewById(R.id.date);
+        mDate = (TextView) findViewById(R.id.date);
+
+        mNews = (LinearLayout)findViewById(R.id.news);
+
         mNews1 = (TextView)findViewById(R.id.news1);
         mNews2 = (TextView)findViewById(R.id.news2);
         mNews3 = (TextView)findViewById(R.id.news3);
@@ -115,12 +127,19 @@ public class MainActivity extends AppCompatActivity {
         mDate.setText(getDate());
 
         getLocation();
-        //mLatitude.setText(new String(Double.toString(latitude)));
-        //mLongitude.setText(new String(Double.toString(longitude)));
 
         updateWeather(Request.Units.SI);
 
-        getNewsUpdate(feed);
+        getNewsUpdate(mFeedList[mFeedNo]);
+
+        mNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFeedNo++;
+                getNewsUpdate(mFeedList[mFeedNo % mFeedList.length]);
+                Toast.makeText(MainActivity.this, "Changing news channel", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mTemperature.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
         final RequestBuilder weather = new RequestBuilder();
 
         Request request = new Request();
-        request.setLat(new String(Double.toString(latitude)));
-        request.setLng(new String(Double.toString(longitude)));
+        request.setLat(new String(Double.toString(mLatitude)));
+        request.setLng(new String(Double.toString(mLongitude)));
         request.setUnits(units);
         request.setLanguage(Request.Language.ENGLISH);
         request.addExcludeBlock(Request.Block.MINUTELY);
@@ -221,21 +240,13 @@ public class MainActivity extends AppCompatActivity {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ASK_CALL_PHONE);
-
                 return;
             }
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if(location != null){
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
+                mLatitude = location.getLatitude();
+                mLongitude = location.getLongitude();
             }
         }else{
             LocationListener locationListener = new LocationListener() {
@@ -271,8 +282,8 @@ public class MainActivity extends AppCompatActivity {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000, 0,locationListener);
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if(location != null){
-                latitude = location.getLatitude(); //经度
-                longitude = location.getLongitude(); //纬度
+                mLatitude = location.getLatitude(); //经度
+                mLongitude = location.getLongitude(); //纬度
             }
         }
     }
@@ -295,23 +306,23 @@ public class MainActivity extends AppCompatActivity {
                 return "February";
             case 2:
                 return "March";
-            case 4:
+            case 3:
                 return "April";
-            case 5:
+            case 4:
                 return "May";
-            case 6:
+            case 5:
                 return "June";
-            case 7:
+            case 6:
                 return "July";
-            case 8:
+            case 7:
                 return "August";
-            case 9:
+            case 8:
                 return "September";
-            case 10:
+            case 9:
                 return "October";
-            case 11:
+            case 10:
                 return "November";
-            case 12:
+            case 11:
                 return "December";
         }
         return null;
