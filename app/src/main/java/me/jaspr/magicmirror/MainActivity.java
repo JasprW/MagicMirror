@@ -3,6 +3,7 @@ package me.jaspr.magicmirror;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -59,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mNews5;
 
     //Add Your Feed List
-    private String[] mFeedList = {"http://www.androidpolice.com/feed","http://www.xda-developers.com/feed","http://sspai.com/feed","http://36kr.com/feed"};
+    Resources res = getResources();
+    private String[] mFeedList = res.getStringArray(R.array.feedlist);
 
     //Add Your Forecast API Key
     private String mForecastApi = getString(R.string.dark_sky_api_key);
