@@ -39,8 +39,8 @@ import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private double mLatitude = 0.0;
-    private double mLongitude = 0.0;
+    private static double mLatitude = 0.0;
+    private static double mLongitude = 0.0;
 
     private TextView mDate;
 
@@ -60,11 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mNews5;
 
     //Add Your Feed List
-    Resources res = getResources();
-    private String[] mFeedList = res.getStringArray(R.array.feedlist);
-
-    //Add Your Forecast API Key
-    private String mForecastApi = getString(R.string.dark_sky_api_key);
+    private String[] mFeedList;
 
     final public static int REQUEST_CODE_ASK_CALL_PHONE = 123;
 
@@ -73,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             //要做的事情
-            getLocation();
-
             if (isSI) {
                 updateWeather(Request.Units.SI);
             } else {
@@ -111,11 +105,16 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        mFeedList = getResources().getStringArray(R.array.feedlist);
+
+        String mForecastApi = getString(R.string.dark_sky_api_key);
+
         ForecastApi.create(mForecastApi);
 
         mTemperature = (TextView)findViewById(R.id.temperature);
         mWeatherSummary = (TextView)findViewById(R.id.weather_summary);
         mWeatherIcon = (ImageView)findViewById(R.id.weather_icon);
+
         mDate = (TextView) findViewById(R.id.date);
 
         mNews = (LinearLayout)findViewById(R.id.news);
@@ -127,8 +126,6 @@ public class MainActivity extends AppCompatActivity {
         mNews5 = (TextView)findViewById(R.id.news5);
 
         mDate.setText(getDate());
-
-        getLocation();
 
         updateWeather(Request.Units.SI);
 
@@ -163,13 +160,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //Update Weather Infp
+    //Update Weather Info
     private void updateWeather(Request.Units units) {
+        getLocation();
+
         final RequestBuilder weather = new RequestBuilder();
 
         Request request = new Request();
-        request.setLat(new String(Double.toString(mLatitude)));
-        request.setLng(new String(Double.toString(mLongitude)));
+        request.setLat(Double.toString(mLatitude));
+        request.setLng(Double.toString(mLongitude));
         request.setUnits(units);
         request.setLanguage(Request.Language.ENGLISH);
         request.addExcludeBlock(Request.Block.MINUTELY);
@@ -240,53 +239,10 @@ public class MainActivity extends AppCompatActivity {
     //Get Location
     private void getLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ASK_CALL_PHONE);
-                return;
-            }
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(location != null){
-                mLatitude = location.getLatitude();
-                mLongitude = location.getLongitude();
-            }
-        }else{
-            LocationListener locationListener = new LocationListener() {
-
-                // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                // Provider被enable时触发此函数，比如GPS被打开
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                // Provider被disable时触发此函数，比如GPS被关闭
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-
-                //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-                @Override
-                public void onLocationChanged(Location location) {
-                    if (location != null) {
-                        Log.e("Map", "Location changed : Lat: "
-                                + location.getLatitude() + " Lng: "
-                                + location.getLongitude());
-                    }
-                }
-            };
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000, 0,locationListener);
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if(location != null){
-                mLatitude = location.getLatitude(); //经度
-                mLongitude = location.getLongitude(); //纬度
-            }
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (location != null) {
+            mLatitude = location.getLatitude();
+            mLongitude = location.getLongitude();
         }
     }
 
