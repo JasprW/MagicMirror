@@ -5,10 +5,12 @@ A good-looking smart mirror app
 - Date, time display
 - Weather display at either ℃ or ℉ (data from Forecast.io)
 - News feed display
-- Stay screen awake (so you don’t need to change setting manually）
+- Stay screen awake (so you don’t need to change setting manually)
+- Same UI with Max Braun's mirror (almost)
 
-## Feature to come
+## Features to come
 - Calendar events and reminders display
+- Face detection (maybe)
 - More...
 
 ## How to run
